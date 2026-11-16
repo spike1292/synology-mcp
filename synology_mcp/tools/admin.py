@@ -56,37 +56,6 @@ async def list_shared_folders() -> str:
 
 
 @mcp.tool()
-async def create_shared_folder(name: str, volume: str = "/volume1", description: str = "") -> str:
-    """
-    Create a new shared folder. [control]
-
-    Args:
-        name: Name of the shared folder
-        volume: Volume path to create it on (default /volume1)
-        description: Optional description
-    """
-    import json as _json
-    check(await api.call(
-        "SYNO.Core.Share", "create", version=1,
-        name=name,
-        shareinfo=_json.dumps({"name": name, "vol_path": volume, "desc": description}),
-    ))
-    return fmt({"created": name, "volume": volume})
-
-
-@mcp.tool()
-async def delete_shared_folder(name: str) -> str:
-    """
-    Delete a shared folder (and its contents). [control]
-
-    Args:
-        name: Name of the shared folder to delete
-    """
-    check(await api.call("SYNO.Core.Share", "delete", version=1, name=name))
-    return fmt({"deleted": name})
-
-
-@mcp.tool()
 async def get_system_logs(limit: int = 30, level: str | None = None) -> str:
     """
     Get recent system log entries.

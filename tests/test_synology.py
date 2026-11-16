@@ -130,3 +130,30 @@ async def test_get_system_info_formats_fields():
     assert out["hostname"] == "nas-test"
     assert out["uptime"] == "1d 1h 1m"
     assert out["temperature_c"] == 47
+
+
+async def test_get_backup_log_passes_task_filter():
+    from synology_mcp.tools import backup
+
+    def handler(request):
+        p = _params(request)
+        if p["api"] == "SYNO.API.Auth":
+            return _ok({"sid": "S"})
+        if p["api"] == "SYNO.SDS.Backup.Client.Common.Log":
+            assert p["method"] == "list" and p["task_id"] == "3" and p["limit"] == "5"
+            return _ok({"log_list": [{"level": "error", "msg": "No permission"}]})
+        return _err(102)
+
+    install_handler(handler)
+    out = json.loads(await backup.get_backup_log(task_id=3, limit=5))
+    assert out["log_list"][0]["msg"] == "No permission"
+
+
+def test_no_write_tools_registered():
+    import asyncio
+
+    from synology_mcp.server import mcp
+
+    names = [t.name for t in asyncio.run(mcp.list_tools())]
+    write = ("delete", "reboot", "shutdown", "install", "set_", "run_", "create_", "rename", "add_", "manage_", "extract")
+    assert not [n for n in names if any(w in n for w in write)]

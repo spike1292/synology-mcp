@@ -50,21 +50,6 @@ async def get_container_logs(name: str, lines: int = 50) -> str:
 
 
 @mcp.tool()
-async def set_container_state(name: str, action: str) -> str:
-    """
-    Start, stop or restart a Docker container. [control]
-
-    Args:
-        name: Container name (from list_containers)
-        action: "start", "stop" or "restart"
-    """
-    if action not in ("start", "stop", "restart"):
-        raise ValueError("action must be 'start', 'stop' or 'restart'")
-    check(await api.call("SYNO.Docker.Container", action, version=1, name=name))
-    return fmt({"container": name, "action": action, "ok": True})
-
-
-@mcp.tool()
 async def get_container_stats(name: str) -> str:
     """
     Get live CPU / memory / network / disk usage for a running container.

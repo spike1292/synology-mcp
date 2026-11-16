@@ -51,14 +51,11 @@ OTP_CODE: str = os.getenv("SYNOLOGY_OTP", "")
 DEVICE_ID: str = os.getenv("SYNOLOGY_DEVICE_ID", "")
 
 # ── Behaviour ──────────────────────────────────────────────────────────────────
-VERIFY_SSL: bool = _flag("SYNOLOGY_VERIFY_SSL", False)
+VERIFY_SSL: bool = _flag("SYNOLOGY_VERIFY_SSL", True)
 TIMEOUT: float = float(os.getenv("SYNOLOGY_TIMEOUT", "30"))
 SESSION_NAME: str = os.getenv("SYNOLOGY_SESSION_NAME", "SynologyMCP")
 DEVICE_NAME: str = os.getenv("SYNOLOGY_DEVICE_NAME", "SynologyMCP")
 
-# Destructive power operations (reboot / shutdown / install DSM update) are
-# disabled unless this is explicitly turned on.
-ENABLE_POWER_CONTROL: bool = _flag("SYNOLOGY_ENABLE_POWER_CONTROL", False)
 
 
 def validate() -> None:

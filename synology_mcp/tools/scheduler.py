@@ -24,13 +24,3 @@ async def list_scheduled_tasks() -> str:
     return fmt({"total": data.get("total", len(tasks)), "tasks": tasks})
 
 
-@mcp.tool()
-async def run_scheduled_task(task_id: int) -> str:
-    """
-    Trigger a scheduled task to run immediately. [control]
-
-    Args:
-        task_id: Numeric task id (from list_scheduled_tasks)
-    """
-    check(await api.call("SYNO.Core.TaskScheduler", "run", version=1, taskId=task_id))
-    return fmt({"task_id": task_id, "triggered": True})

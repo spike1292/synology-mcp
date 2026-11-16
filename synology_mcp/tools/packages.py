@@ -51,16 +51,3 @@ async def list_packages(running_only: bool = False) -> str:
     return fmt({"total": len(packages), "packages": packages})
 
 
-@mcp.tool()
-async def set_package_state(package_id: str, action: str) -> str:
-    """
-    Start or stop an installed package. [control]
-
-    Args:
-        package_id: Package id from list_packages (e.g. "WebStation", "DownloadStation")
-        action: "start" or "stop"
-    """
-    if action not in ("start", "stop"):
-        raise ValueError("action must be 'start' or 'stop'")
-    check(await api.call("SYNO.Core.Package.Control", action, version=1, id=package_id))
-    return fmt({"package_id": package_id, "action": action, "ok": True})

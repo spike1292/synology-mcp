@@ -1,6 +1,6 @@
 # Tool Reference
 
-The Synology MCP server exposes **71 tools**. Tools tagged `control` change NAS state; tools tagged `power` are destructive and disabled unless `SYNOLOGY_ENABLE_POWER_CONTROL=true`.
+The Synology MCP server exposes **53 tools**. This fork is read-only: no tool changes NAS state.
 
 ## Contents
 
@@ -8,23 +8,22 @@ The Synology MCP server exposes **71 tools**. Tools tagged `control` change NAS 
 - [System Monitoring](#system-monitoring) (4)
 - [System Health & Activity](#system-health-activity) (4)
 - [Storage](#storage) (3)
-- [Files](#files) (12)
-- [Packages & DSM Updates](#packages-dsm-updates) (3)
-- [Docker / Container Manager](#docker-container-manager) (6)
-- [Virtual Machine Manager](#virtual-machine-manager) (2)
+- [Files](#files) (6)
+- [Packages & DSM Updates](#packages-dsm-updates) (2)
+- [Docker / Container Manager](#docker-container-manager) (5)
+- [Virtual Machine Manager](#virtual-machine-manager) (1)
 - [Surveillance Station](#surveillance-station) (2)
 - [Synology Photos](#synology-photos) (1)
 - [Synology Drive](#synology-drive) (1)
-- [Download Station](#download-station) (3)
+- [Download Station](#download-station) (1)
 - [Backup](#backup) (2)
-- [Task Scheduler](#task-scheduler) (2)
-- [Users, Groups & Shared Folders](#users-groups-shared-folders) (7)
-- [File & Terminal Services](#file-terminal-services) (4)
+- [Task Scheduler](#task-scheduler) (1)
+- [Users, Groups & Shared Folders](#users-groups-shared-folders) (5)
+- [File & Terminal Services](#file-terminal-services) (3)
 - [Hardware](#hardware) (4)
 - [Security & Certificates](#security-certificates) (4)
 - [Network Services](#network-services) (2)
 - [Notifications](#notifications) (1)
-- [Power Control (opt-in)](#power-control-opt-in) (3)
 
 ## Dashboard
 
@@ -151,73 +150,6 @@ Get storage pools with RAID type, status and data-scrubbing state.
 
 Browse, inspect, search and manage files via File Station.
 
-### `copy_move_item`  —  `control`
-
-Copy or move files/folders into an existing destination folder.
-
-**Parameters**
-
-| Name | Type | Required | Default |
-|------|------|----------|---------|
-| `paths` | string | yes |  |
-| `dest_folder` | string | yes |  |
-| `move` | boolean | no | `False` |
-| `overwrite` | boolean | no | `False` |
-
-**Returns:** Action (copy/move) and completion status.
-
-### `create_folder`
-
-Create a new folder.
-
-**Parameters**
-
-| Name | Type | Required | Default |
-|------|------|----------|---------|
-| `parent_path` | string | yes |  |
-| `name` | string | yes |  |
-
-**Returns:** Confirmation with the created folder path.
-
-### `create_share_link`  —  `control`
-
-Create a public sharing link for a file or folder.
-
-**Parameters**
-
-| Name | Type | Required | Default |
-|------|------|----------|---------|
-| `path` | string | yes |  |
-| `password` | any | no |  |
-
-**Returns:** The created public link(s): URL and link id.
-
-### `delete_item`  —  `control`
-
-Delete files or folders.
-
-**Parameters**
-
-| Name | Type | Required | Default |
-|------|------|----------|---------|
-| `paths` | string | yes |  |
-| `recursive` | boolean | no | `True` |
-
-**Returns:** Confirmation and the list of deleted paths.
-
-### `extract_archive`  —  `control`
-
-Extract an archive (ZIP, etc.) into a destination folder.
-
-**Parameters**
-
-| Name | Type | Required | Default |
-|------|------|----------|---------|
-| `archive_path` | string | yes |  |
-| `dest_folder` | string | yes |  |
-
-**Returns:** Destination folder and completion status.
-
 ### `get_directory_size`
 
 Calculate the total size and item count of a folder (recursively).
@@ -279,19 +211,6 @@ List all available shared folders (File Station view).
 
 **Returns:** Shared folders visible in File Station: name, path, real path and read-only flag.
 
-### `rename_item`
-
-Rename a file or folder.
-
-**Parameters**
-
-| Name | Type | Required | Default |
-|------|------|----------|---------|
-| `path` | string | yes |  |
-| `new_name` | string | yes |  |
-
-**Returns:** Confirmation with the renamed item.
-
 ### `search_files`
 
 Search for files by name pattern within a folder.
@@ -330,19 +249,6 @@ List installed packages (apps) with their version and running status.
 | `running_only` | boolean | no | `False` |
 
 **Returns:** Installed packages with id, name, version, running status and type. Optionally only running ones.
-
-### `set_package_state`  —  `control`
-
-Start or stop an installed package.
-
-**Parameters**
-
-| Name | Type | Required | Default |
-|------|------|----------|---------|
-| `package_id` | string | yes |  |
-| `action` | string | yes |  |
-
-**Returns:** Confirmation of the start/stop action on a package.
 
 ## Docker / Container Manager
 
@@ -397,19 +303,6 @@ List Docker Compose / Container Manager projects.
 
 **Returns:** Container Manager / Compose projects: id, name, status, path, container count and creation time.
 
-### `set_container_state`  —  `control`
-
-Start, stop or restart a Docker container.
-
-**Parameters**
-
-| Name | Type | Required | Default |
-|------|------|----------|---------|
-| `name` | string | yes |  |
-| `action` | string | yes |  |
-
-**Returns:** Confirmation of start/stop/restart on a container.
-
 ## Virtual Machine Manager
 
 Virtual machine guests.
@@ -421,19 +314,6 @@ List Virtual Machine Manager guests with their state and resource allocation.
 **Parameters:** none
 
 **Returns:** VMM guests with name, status, vCPUs, RAM (MB), storage, autorun and description.
-
-### `set_vm_state`  —  `control`
-
-Power a virtual machine on or off.
-
-**Parameters**
-
-| Name | Type | Required | Default |
-|------|------|----------|---------|
-| `name` | string | yes |  |
-| `action` | string | yes |  |
-
-**Returns:** Confirmation of poweron/poweroff/shutdown/restart on a VM.
 
 ## Surveillance Station
 
@@ -488,19 +368,6 @@ List Synology Drive client connections (devices syncing with the NAS).
 
 Download tasks (HTTP/FTP/magnet/torrent).
 
-### `add_download`  —  `control`
-
-Add a new download task from a URL or magnet link.
-
-**Parameters**
-
-| Name | Type | Required | Default |
-|------|------|----------|---------|
-| `url` | string | yes |  |
-| `destination` | string | yes |  |
-
-**Returns:** Confirmation of the added URL and its destination.
-
 ### `list_downloads`
 
 List Download Station tasks with progress, size and transfer speed.
@@ -509,22 +376,22 @@ List Download Station tasks with progress, size and transfer speed.
 
 **Returns:** Download tasks with id, title, type, status, size (MB), progress % and up/down speed (KB/s).
 
-### `manage_download`  —  `control`
+## Backup
 
-Pause, resume or delete download tasks.
+Hyper Backup tasks.
+
+### `get_backup_log`
+
+Read Hyper Backup log entries (newest first), including the error reason.
 
 **Parameters**
 
 | Name | Type | Required | Default |
 |------|------|----------|---------|
-| `task_ids` | string | yes |  |
-| `action` | string | yes |  |
+| `task_id` | any | no |  |
+| `limit` | integer | no | `50` |
 
-**Returns:** Confirmation of pause/resume/delete on the given task ids.
-
-## Backup
-
-Hyper Backup tasks.
+**Returns:** See description.
 
 ### `list_backup_tasks`
 
@@ -533,18 +400,6 @@ List Hyper Backup tasks with their current state and target.
 **Parameters:** none
 
 **Returns:** Hyper Backup tasks with id, name, state, status, target, type and encryption flag.
-
-### `run_backup_task`  —  `control`
-
-Start a Hyper Backup task immediately.
-
-**Parameters**
-
-| Name | Type | Required | Default |
-|------|------|----------|---------|
-| `task_id` | integer | yes |  |
-
-**Returns:** Confirmation that the backup task was started.
 
 ## Task Scheduler
 
@@ -558,47 +413,9 @@ List scheduled tasks (cron jobs, scripts, scheduled backups, etc.).
 
 **Returns:** Scheduled tasks with id, name, type, enabled flag, owner, next run and can-run-now flag.
 
-### `run_scheduled_task`  —  `control`
-
-Trigger a scheduled task to run immediately.
-
-**Parameters**
-
-| Name | Type | Required | Default |
-|------|------|----------|---------|
-| `task_id` | integer | yes |  |
-
-**Returns:** Confirmation that the task was triggered.
-
 ## Users, Groups & Shared Folders
 
 Accounts, groups, shared folders, logs and security scan.
-
-### `create_shared_folder`  —  `control`
-
-Create a new shared folder.
-
-**Parameters**
-
-| Name | Type | Required | Default |
-|------|------|----------|---------|
-| `name` | string | yes |  |
-| `volume` | string | no | `/volume1` |
-| `description` | string | no | `` |
-
-**Returns:** Confirmation with the created folder name and volume.
-
-### `delete_shared_folder`  —  `control`
-
-Delete a shared folder (and its contents).
-
-**Parameters**
-
-| Name | Type | Required | Default |
-|------|------|----------|---------|
-| `name` | string | yes |  |
-
-**Returns:** Confirmation of the deleted folder.
 
 ### `get_security_scan_status`
 
@@ -672,19 +489,6 @@ Get SSH / Telnet terminal access settings.
 **Parameters:** none
 
 **Returns:** SSH and Telnet enabled state and SSH port.
-
-### `set_file_service`  —  `control`
-
-Enable or disable a file-sharing protocol.
-
-**Parameters**
-
-| Name | Type | Required | Default |
-|------|------|----------|---------|
-| `service` | string | yes |  |
-| `enabled` | boolean | yes |  |
-
-**Returns:** Confirmation of enabling/disabling a file-sharing protocol.
 
 ## Hardware
 
@@ -789,32 +593,4 @@ Get e-mail notification settings (enabled state, sender, SMTP).
 **Parameters:** none
 
 **Returns:** E-mail notification enabled state, sender, SMTP server and OAuth flag.
-
-## Power Control (opt-in)
-
-Reboot, shutdown and DSM update — disabled unless enabled.
-
-### `install_dsm_update`  —  `control` `power`
-
-Download and install an available DSM update, then reboot.
-
-**Parameters:** none
-
-**Returns:** Confirmation that a DSM update install was started (requires power control enabled).
-
-### `reboot_nas`  —  `control` `power`
-
-Reboot the NAS.  Requires SYNOLOGY_ENABLE_POWER_CONTROL=true.
-
-**Parameters:** none
-
-**Returns:** Confirmation that a reboot was issued (requires power control enabled).
-
-### `shutdown_nas`  —  `control` `power`
-
-Shut down (power off) the NAS.  Requires SYNOLOGY_ENABLE_POWER_CONTROL=true.
-
-**Parameters:** none
-
-**Returns:** Confirmation that a shutdown was issued (requires power control enabled).
 

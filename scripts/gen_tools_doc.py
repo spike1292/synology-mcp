@@ -169,8 +169,7 @@ def main() -> None:
 
     out = ["# Tool Reference\n",
            f"The Synology MCP server exposes **{len(tools_meta)} tools**. "
-           "Tools tagged `control` change NAS state; tools tagged `power` are "
-           "destructive and disabled unless `SYNOLOGY_ENABLE_POWER_CONTROL=true`.\n",
+           "This fork is read-only: no tool changes NAS state.\n",
            "## Contents\n"]
     for mod, title, _ in CATEGORIES:
         if mod in by_mod:

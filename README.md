@@ -6,6 +6,8 @@
 
 **Monitor and manage a Synology DSM 7 NAS from any MCP client — and build live dashboards right inside the chat.**
 
+> **Read-only fork** of [rafalr100/synology-mcp](https://github.com/rafalr100/synology-mcp): every tool that changes NAS state is removed, TLS is verified by default, and `get_backup_log` reads Hyper Backup errors.
+
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue)](https://www.python.org/)
 [![MCP](https://img.shields.io/badge/protocol-MCP-7c3aed)](https://modelcontextprotocol.io)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
@@ -190,11 +192,10 @@ SYNOLOGY_PASS=your_password
 | `SYNOLOGY_PASS` | ✅ | — | DSM password |
 | `SYNOLOGY_DEVICE_ID` | 2FA only | — | Trusted-device token (from `bootstrap_2fa.py`) |
 | `SYNOLOGY_OTP` | — | — | One-time OTP (bootstrap only; prefer the device token) |
-| `SYNOLOGY_VERIFY_SSL` | — | `false` | Verify the TLS certificate |
+| `SYNOLOGY_VERIFY_SSL` | — | `true` | Verify the TLS certificate |
 | `SYNOLOGY_TIMEOUT` | — | `30` | HTTP timeout (seconds) |
 | `SYNOLOGY_SESSION_NAME` | — | `SynologyMCP` | Session name shown in DSM |
 | `SYNOLOGY_DEVICE_NAME` | — | `SynologyMCP` | Device name shown in DSM |
-| `SYNOLOGY_ENABLE_POWER_CONTROL` | — | `false` | Allow `reboot_nas` / `shutdown_nas` / `install_dsm_update` |
 
 See [docs/CONFIGURATION.md](docs/CONFIGURATION.md) for details.
 
@@ -368,7 +369,7 @@ under `synology_mcp/tools/` and add the module to `tools/__init__.py`.
   are git-ignored.
 - Prefer a **dedicated DSM account** with only the privileges you need over the main admin.
 - Intended for **trusted local-network** use.
-- **Power operations are opt-in** via `SYNOLOGY_ENABLE_POWER_CONTROL=true`.
+- **Read-only:** no tool changes NAS state.
 - The HTTP client silences request logging so credentials never reach stderr.
 
 ---
@@ -385,7 +386,7 @@ under `synology_mcp/tools/` and add the module to `tools/__init__.py`.
 | Tools don’t appear in Claude Desktop | Fully **quit** (not just close) and reopen; check the config path and that the `command` path is absolute. |
 | `ModuleNotFoundError: synology_mcp` | Set `PYTHONPATH` to the repo root in the client `env`, or `pip install -e .`. |
 | Connection timeout | Check `SYNOLOGY_URL`/port and that the NAS is reachable; raise `SYNOLOGY_TIMEOUT`. |
-| TLS certificate error | Use `http://…:5000`, or set `SYNOLOGY_VERIFY_SSL=false` (default) for self-signed certs. |
+| TLS certificate error | Use `http://…:5000`, or set `SYNOLOGY_VERIFY_SSL=false` for self-signed certs on a trusted LAN. |
 | A feature tool errors | That package/feature may not be installed/enabled (e.g. VMM, Docker, UPS, DDNS). |
 
 ---

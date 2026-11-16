@@ -23,18 +23,13 @@ in a `.env` file in the project root (auto-loaded), or supplied via the MCP clie
 
 ### Behaviour
 
-- **`SYNOLOGY_VERIFY_SSL`** *(default `false`)* — verify the TLS certificate. Set to
-  `true` only if your NAS presents a valid (non-self-signed) certificate.
+- **`SYNOLOGY_VERIFY_SSL`** *(default `true`)* — verify the TLS certificate. Set to
+  `false` only for a self-signed certificate on a trusted LAN.
 - **`SYNOLOGY_TIMEOUT`** *(default `30`)* — HTTP request timeout in seconds.
 - **`SYNOLOGY_SESSION_NAME`** *(default `SynologyMCP`)* — session label shown in DSM.
 - **`SYNOLOGY_DEVICE_NAME`** *(default `SynologyMCP`)* — device label shown in DSM's
   trusted-device list.
 
-### Power control
-
-- **`SYNOLOGY_ENABLE_POWER_CONTROL`** *(default `false`)* — when `true`, enables the
-  destructive tools `reboot_nas`, `shutdown_nas` and `install_dsm_update`. They raise an
-  error while disabled.
 
 ## Required privileges
 

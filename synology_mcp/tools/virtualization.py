@@ -27,18 +27,3 @@ async def list_virtual_machines() -> str:
     return fmt({"total": len(guests), "guests": guests})
 
 
-@mcp.tool()
-async def set_vm_state(name: str, action: str) -> str:
-    """
-    Power a virtual machine on or off. [control]
-
-    Args:
-        name: VM name (from list_virtual_machines)
-        action: "poweron", "poweroff" (force off), "shutdown" (graceful) or "restart"
-    """
-    methods = {"poweron": "poweron", "poweroff": "poweroff",
-               "shutdown": "shutdown", "restart": "restart"}
-    if action not in methods:
-        raise ValueError("action must be 'poweron', 'poweroff', 'shutdown' or 'restart'")
-    check(await api.call(_GUEST_API + ".Action", methods[action], version=1, guest_name=name))
-    return fmt({"vm": name, "action": action, "ok": True})

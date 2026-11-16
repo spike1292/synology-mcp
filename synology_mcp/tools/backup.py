@@ -28,13 +28,19 @@ async def list_backup_tasks() -> str:
     })
 
 
+
+
 @mcp.tool()
-async def run_backup_task(task_id: int) -> str:
+async def get_backup_log(task_id: int | None = None, limit: int = 50) -> str:
     """
-    Start a Hyper Backup task immediately. [control]
+    Read Hyper Backup log entries (newest first), including the error reason.
 
     Args:
-        task_id: Numeric task id (from list_backup_tasks)
+        task_id: Only this task (from list_backup_tasks); omit for all tasks
+        limit: Maximum number of entries
     """
-    check(await api.call("SYNO.Backup.Task", "backup", version=1, task_id=task_id))
-    return fmt({"task_id": task_id, "started": True})
+    data = check(await api.call(
+        "SYNO.SDS.Backup.Client.Common.Log", "list", version=1,
+        task_id=task_id, offset=0, limit=limit,
+    ))
+    return fmt(data)

@@ -27,8 +27,7 @@ This server connects to **your own NAS on your local network** and runs locally:
   **never** committed, logged, or transmitted anywhere except to your NAS.
 - HTTP request logging is suppressed so credentials and session ids do not reach
   stderr.
-- Destructive power operations (`reboot_nas`, `shutdown_nas`,
-  `install_dsm_update`) are disabled unless `SYNOLOGY_ENABLE_POWER_CONTROL=true`.
+- Read-only fork: no tool changes NAS state. TLS certificates are verified by default.
 
 ## Hardening recommendations
 

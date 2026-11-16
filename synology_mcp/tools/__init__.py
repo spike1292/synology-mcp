@@ -18,7 +18,6 @@ from . import (  # noqa: F401
     notifications,
     packages,
     photos,
-    power,
     scheduler,
     security,
     services,

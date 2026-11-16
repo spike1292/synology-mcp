@@ -32,23 +32,6 @@ async def get_file_services() -> str:
 
 
 @mcp.tool()
-async def set_file_service(service: str, enabled: bool) -> str:
-    """
-    Enable or disable a file-sharing protocol. [control]
-
-    Args:
-        service: One of "smb", "afp", "nfs", "ftp"
-        enabled: True to enable, False to disable
-    """
-    service = service.lower()
-    if service not in _SERVICES:
-        raise ValueError("service must be one of: smb, afp, nfs, ftp")
-    api_name, field = _SERVICES[service]
-    check(await api.call(api_name, "set", version=2, **{field: "true" if enabled else "false"}))
-    return fmt({"service": service, "enabled": enabled, "ok": True})
-
-
-@mcp.tool()
 async def get_terminal_settings() -> str:
     """Get SSH / Telnet terminal access settings."""
     data = check(await api.call("SYNO.Core.Terminal", "get", version=3))
