@@ -31,16 +31,16 @@ async def list_backup_tasks() -> str:
 
 
 @mcp.tool()
-async def get_backup_log(task_id: int | None = None, limit: int = 50) -> str:
+async def get_backup_log(keyword: str | None = None, limit: int = 50) -> str:
     """
     Read Hyper Backup log entries (newest first), including the error reason.
 
     Args:
-        task_id: Only this task (from list_backup_tasks); omit for all tasks
+        keyword: Only entries containing this text, e.g. a task name like "Timemachine"
         limit: Maximum number of entries
     """
     data = check(await api.call(
         "SYNO.SDS.Backup.Client.Common.Log", "list", version=1,
-        task_id=task_id, offset=0, limit=limit,
+        filter_keyword=keyword, offset=0, limit=limit,
     ))
     return fmt(data)

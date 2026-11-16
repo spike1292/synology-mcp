@@ -132,7 +132,7 @@ async def test_get_system_info_formats_fields():
     assert out["temperature_c"] == 47
 
 
-async def test_get_backup_log_passes_task_filter():
+async def test_get_backup_log_passes_keyword_filter():
     from synology_mcp.tools import backup
 
     def handler(request):
@@ -140,12 +140,12 @@ async def test_get_backup_log_passes_task_filter():
         if p["api"] == "SYNO.API.Auth":
             return _ok({"sid": "S"})
         if p["api"] == "SYNO.SDS.Backup.Client.Common.Log":
-            assert p["method"] == "list" and p["task_id"] == "3" and p["limit"] == "5"
+            assert p["method"] == "list" and p["filter_keyword"] == "Timemachine" and p["limit"] == "5"
             return _ok({"log_list": [{"level": "error", "msg": "No permission"}]})
         return _err(102)
 
     install_handler(handler)
-    out = json.loads(await backup.get_backup_log(task_id=3, limit=5))
+    out = json.loads(await backup.get_backup_log(keyword="Timemachine", limit=5))
     assert out["log_list"][0]["msg"] == "No permission"
 
 

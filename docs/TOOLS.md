@@ -388,7 +388,7 @@ Read Hyper Backup log entries (newest first), including the error reason.
 
 | Name | Type | Required | Default |
 |------|------|----------|---------|
-| `task_id` | any | no |  |
+| `keyword` | any | no |  |
 | `limit` | integer | no | `50` |
 
 **Returns:** See description.
